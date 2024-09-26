@@ -16,39 +16,40 @@ router.get('/:id', md.checkAccountId, async (req, res, next) => {
  res.json(req.account)
 })
 
+
 router.post(
   '/',
   md.checkAccountPayload, 
-  md.checkAccountNameUnique,
-   (req, res, next) => {
-
-  // DO YOUR MAGIC
-  try {
-    res.json('post account')
-  } catch (err) {
-    next(err)
+  md.checkAccountNameUnique,  // Ensure this is here
+  async (req, res, next) => {
+    try {
+      const newAccount = await Account.create(req.body); // Call the create function
+      res.status(201).json(newAccount); // Return the newly created account
+    } catch (err) {
+      next(err);
+    }
   }
-})
+);
+
 
 router.put('/:id',
   md.checkAccountId,
   md.checkAccountPayload, 
   md.checkAccountNameUnique,
-   (req, res, next) => {
+  async (req, res, next) => {
 
-  // DO YOUR MAGIC
   try {
-    res.json('update account')
+    const updatedAccount = await Account.updateById(req.params.id, req.body)
+    res.json(updatedAccount)
   } catch (err) {
     next(err)
   }
 });
 
-router.delete('/:id', md.checkAccountId, (req, res, next) => {
-
-  // DO YOUR MAGIC
+router.delete('/:id', md.checkAccountId, async (req, res, next) => {
   try {
-    res.json('delete account')
+    await Account.deleteById(req.params.id)
+    res.status(200).json({ message: 'Account deleted' })
   } catch (err) {
     next(err)
   }
