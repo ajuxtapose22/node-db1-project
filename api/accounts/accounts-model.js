@@ -12,7 +12,7 @@ const getById = id => {
 }
 
 const create = account => {
-  // DO YOUR MAGIC
+  // DO YOUR MAGICGET
 }
 
 const updateById = (id, account) => {
